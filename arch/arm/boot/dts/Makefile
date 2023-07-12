@@ -1486,7 +1486,8 @@ dtb-$(CONFIG_ARCH_TEGRA_3x_SOC) += \
 	tegra30-microsoft-surface-rt.dtb \
 	tegra30-microsoft-surface-rt-efi.dtb \
 	tegra30-ouya.dtb \
-	tegra30-pegatron-chagall.dtb
+	tegra30-pegatron-chagall.dtb \
+	tegra30-wexler-qc750.dtb
 dtb-$(CONFIG_ARCH_TEGRA_114_SOC) += \
 	tegra114-asus-tf701t.dtb \
 	tegra114-dalmore.dtb \
