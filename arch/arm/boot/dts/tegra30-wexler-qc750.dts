@@ -9,6 +9,7 @@
 #include "tegra30.dtsi"
 #include "tegra30-cpu-opp.dtsi"
 #include "tegra30-cpu-opp-microvolt.dtsi"
+#include "tegra30-asus-lvds-display.dtsi"
 
 / {
 	model = "Wexler Tab 7t (QC750)";
@@ -72,21 +73,6 @@
 			no-map;
 		};
 	};
-
-/*	host1x@50000000 {
-		lcd: dc@54200000 {
-			rgb {
-				status = "okay";
-
-				port@0 {
-					dpi_output: endpoint {
-						remote-endpoint = <&bridge_input>;
-						bus-width = <24>;
-					};
-				};
-			};
-		};
-	}; */
 
 	vde@6001a000 {
 		assigned-clocks = <&tegra_car TEGRA30_CLK_VDE>;
@@ -341,12 +327,42 @@
 		nvidia,xcvr-lsrslew = <2>;
 	};
 
+	backlight: backlight {
+		compatible = "pwm-backlight";
+
+		power-supply = <&vdd_5v0_vbus>;
+		pwms = <&pwm 0 50000>;
+
+		brightness-levels = <1 255>;
+		num-interpolated-steps = <254>;
+		default-brightness-level = <15>;
+	};
+
 	/* PMIC has a built-in 32KHz oscillator which is used by PMC */
 	clk32k_in: clock-32k {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
 		clock-frequency = <32768>;
 		clock-output-names = "pmic-oscillator";
+	};
+
+	display-panel {
+		compatible = "chunghwa,claa070wp03xg", "simple-panel";
+
+		/* DDC unconnected on Nexus 7 */
+		/delete-property/ ddc-i2c-bus;
+
+		panel-timing {
+			clock-frequency = <66770000>;
+			hsync-len = <64>;
+			vsync-len = <1>;
+			hback-porch = <128>;
+			vback-porch = <2>;
+			hactive = <800>;
+			vactive = <1280>;
+			hfront-porch = <64>;
+			vfront-porch = <5>;
+		};
 	};
 
 	cpus {
@@ -391,6 +407,17 @@
 		gpio = <&pmic 3 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		vin-supply = <&vdd_5v0_vbus>;
+	};
+
+	vdd_pnl: regulator-panel {
+		compatible = "regulator-fixed";
+		regulator-name = "vdd_panel";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-enable-ramp-delay = <300000>;
+		gpio = <&gpio TEGRA_GPIO(W, 1) GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		vin-supply = <&vdd_3v3_sys>;
 	};
 
 	vdd_usd: regulator-emmc {
