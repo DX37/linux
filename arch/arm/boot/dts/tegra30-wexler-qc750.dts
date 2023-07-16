@@ -331,6 +331,16 @@
 		nvidia,xcvr-lsrslew = <2>;
 	};
 
+	/* Full size USB */
+	usb3: usb@7d008000 {
+		status = "okay";
+	};
+
+	usb3_phy: usb-phy@7d008000 {
+		status = "okay";
+		vbus-supply = <&vdd_5v0_vbus>;
+	};
+
 	backlight: backlight {
 		compatible = "pwm-backlight";
 
