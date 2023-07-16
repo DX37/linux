@@ -9,7 +9,7 @@
 #include "tegra30.dtsi"
 #include "tegra30-cpu-opp.dtsi"
 #include "tegra30-cpu-opp-microvolt.dtsi"
-// #include "tegra30-asus-lvds-display.dtsi"
+#include "tegra30-asus-lvds-display.dtsi"
 
 / {
 	model = "Wexler Tab 7t (QC750)";
@@ -84,6 +84,10 @@
 		status = "okay";
 
 		/* Console */
+	};
+
+	pwm: pwm@7000a000 {
+		status = "okay";
 	};
 
 	pwr_i2c: i2c@7000d000 {
@@ -330,7 +334,6 @@
 	backlight: backlight {
 		compatible = "pwm-backlight";
 
-		enable-gpios = <&gpio TEGRA_GPIO(H, 0) GPIO_ACTIVE_LOW>;
 		pwms = <&pwm 0 5000000>;
 		power-supply = <&vdd_bl>;
 
@@ -379,24 +382,11 @@
 		clock-output-names = "pmic-oscillator";
 	};
 
-/*	display-panel {
-		compatible = "chunghwa,claa070wp03xg", "simple-panel";
+	display-panel {
+		compatible = "chunghwa,claa070wp03xg";
 
-		// DDC unconnected on Nexus 7
 		/delete-property/ ddc-i2c-bus;
-
-		panel-timing {
-			clock-frequency = <66770000>;
-			hsync-len = <64>;
-			vsync-len = <1>;
-			hback-porch = <128>;
-			vback-porch = <2>;
-			hactive = <800>;
-			vactive = <1280>;
-			hfront-porch = <64>;
-			vfront-porch = <5>;
-		};
-	}; */
+	};
 
 	pinmux@70000868 {
 		pinctrl-names = "default";
@@ -1288,7 +1278,7 @@
 		vin-supply = <&vdd_3v3_sys>;
 	};
 
-/*	vdd_pnl: regulator-panel {
+	vdd_pnl: regulator-panel {
 		compatible = "regulator-fixed";
 		regulator-name = "vdd_panel";
 		regulator-min-microvolt = <3300000>;
@@ -1297,7 +1287,7 @@
 		gpio = <&gpio TEGRA_GPIO(W, 1) GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		vin-supply = <&vdd_3v3_sys>;
-	}; */
+	};
 
 	vdd_usd: regulator-emmc {
 		compatible = "regulator-fixed";
