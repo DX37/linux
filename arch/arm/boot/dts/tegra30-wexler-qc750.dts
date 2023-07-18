@@ -1309,4 +1309,21 @@
 		enable-active-high;
 		vin-supply = <&vdd_3v3_sys>;
 	};
+
+	hda: hda@70030000 {
+		status = "okay";
+	};
+
+	host1x@50000000 {
+		hdmi: hdmi@54280000 {
+			status = "okay";
+
+			hdmi-supply = <&vdd_5v0_vbus>;
+			pll-supply = <&vdd_1v8_vio>;
+			vdd-supply = <&vdd_3v3_sys>;
+
+			nvidia,hpd-gpio = <&gpio TEGRA_GPIO(N, 7) GPIO_ACTIVE_HIGH>;
+			// nvidia,ddc-i2c-bus = <&hdmi_ddc>;
+		};
+	};
 };
