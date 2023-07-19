@@ -90,9 +90,53 @@
 		status = "okay";
 	};
 
+	i2c1: i2c@7000c000 {
+		status = "okay";
+		clock-frequency = <100000>;
+	};
+
+	i2c2: i2c@7000c400 {
+		status = "okay";
+		clock-frequency = <100000>;
+	};
+
+	i2c3: i2c@7000c500 {
+		status = "okay";
+		clock-frequency = <100000>;
+	};
+
+	i2c4: i2c@7000c700 {
+		status = "okay";
+		clock-frequency = <10000>;
+	};
+
 	pwr_i2c: i2c@7000d000 {
 		status = "okay";
 		clock-frequency = <400000>;
+
+		tlv320aic3206: tlv320aic3206@18 {
+			compatible = "ti,tlv320aic32x6";
+			reg = <0x18>;
+
+			reset-gpios = <&gpio TEGRA_GPIO(X, 2) GPIO_ACTIVE_LOW>;
+
+			interrupt-parent = <&gpio>;
+			interrupts = <TEGRA_GPIO(W, 2) IRQ_TYPE_LEVEL_HIGH>;
+
+			gpio-controller;
+			#gpio-cells = <2>;
+
+			micdet-cfg = <0>;
+			micdet-delay = <100>;
+			gpio-cfg = <0xffffffff 0xffffffff 0 0xffffffff 0xffffffff>;
+
+			clocks = <&tegra_car TEGRA30_CLK_CLK_M>;
+			clock-names = "mclk";
+			ldoin-supply = <&vdd_3v3_audio>;
+			iov-supply = <&vdd_3v3_audio>;
+			// dv-supply = <&vdd_1v8_vio>;
+			// av-supply = <&vdd_1v8_vio>;
+		};
 
 		pmic: max77663@3c {
 			compatible = "maxim,max77663";
@@ -1308,6 +1352,14 @@
 		gpio = <&gpio TEGRA_GPIO(C, 6) GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		vin-supply = <&vdd_3v3_sys>;
+	};
+
+	vdd_3v3_audio: regulator-3v3-audio {
+		compatible = "regulator-fixed";
+		regulator-name = "vdd_3v3_audio";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		regulator-always-on;
 	};
 
 	hda: hda@70030000 {
