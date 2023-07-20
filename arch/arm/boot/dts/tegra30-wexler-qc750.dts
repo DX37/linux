@@ -105,7 +105,7 @@
 		clock-frequency = <100000>;
 	};
 
-	i2c4: i2c@7000c700 {
+	hdmi_ddc: i2c@7000c700 {
 		status = "okay";
 		clock-frequency = <10000>;
 	};
@@ -1375,7 +1375,7 @@
 			vdd-supply = <&vdd_3v3_sys>;
 
 			nvidia,hpd-gpio = <&gpio TEGRA_GPIO(N, 7) GPIO_ACTIVE_HIGH>;
-			// nvidia,ddc-i2c-bus = <&hdmi_ddc>;
+			nvidia,ddc-i2c-bus = <&hdmi_ddc>;
 		};
 	};
 };
