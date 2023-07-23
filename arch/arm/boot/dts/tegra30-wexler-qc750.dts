@@ -93,6 +93,50 @@
 	i2c1: i2c@7000c000 {
 		status = "okay";
 		clock-frequency = <100000>;
+
+		magnetometer@c {
+			compatible = "asahi-kasei,ak8975";
+			reg = <0x0c>;
+			interrupt-parent = <&gpio>;
+			interrupts = <TEGRA_GPIO(W, 0) IRQ_TYPE_LEVEL_HIGH>;
+
+			vdd-supply    = <&vdd_3v3_sys>;
+			vlogic-supply = <&vdd_1v8_vio>;
+
+			mount-matrix = "0", "1", "0",
+						"1", "0", "0",
+						"0", "0", "-1";
+		};
+
+		accelerometer@f {
+			compatible = "kionix,kxtf9";
+			reg = <0x0f>;
+
+			interrupt-parent = <&gpio>;
+			interrupts = <TEGRA_GPIO(X, 1) IRQ_TYPE_EDGE_RISING>;
+
+			vdd-supply = <&vdd_1v8_vio>;
+			vddio-supply = <&vdd_1v8_vio>;
+
+			mount-matrix = "-1", "0", "0",
+						"0", "-1", "0",
+						"0", "0", "1";
+		};
+
+		gyroscope@68 {
+			compatible = "invensense,mpu3050";
+			reg = <0x68>;
+
+			interrupt-parent = <&gpio>;
+			interrupts = <TEGRA_GPIO(Z, 4) IRQ_TYPE_LEVEL_HIGH>;
+
+			vdd-supply    = <&vdd_3v3_sys>;
+			vlogic-supply = <&vdd_1v8_vio>;
+
+			mount-matrix = "1", "0", "0",
+						"0", "1", "0",
+						"0", "0", "1";
+		};
 	};
 
 	i2c2: i2c@7000c400 {
@@ -316,6 +360,17 @@
 					maxim,active-fps-source = <MAX77620_FPS_SRC_1>;
 				};
 			};
+		};
+
+		nct72: temperature-sensor@4c {
+			compatible = "onnn,nct1008";
+			reg = <0x4c>;
+
+			interrupt-parent = <&gpio>;
+			interrupts = <TEGRA_GPIO(CC, 2) IRQ_TYPE_EDGE_FALLING>;
+
+			vcc-supply = <&vdd_3v3_sys>;
+			#thermal-sensor-cells = <1>;
 		};
 	};
 
