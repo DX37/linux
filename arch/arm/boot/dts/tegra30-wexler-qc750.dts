@@ -142,6 +142,11 @@
 	i2c2: i2c@7000c400 {
 		status = "okay";
 		clock-frequency = <100000>;
+
+		battery: bq27500@55 {
+			compatible = "ti,bq27500";
+			reg = <0x55>;
+		};
 	};
 
 	i2c3: i2c@7000c500 {
