@@ -180,8 +180,8 @@
 
 			clocks = <&tegra_car TEGRA30_CLK_CLK_M>;
 			clock-names = "mclk";
-			ldoin-supply = <&vdd_3v3_audio>;
-			iov-supply = <&vdd_3v3_audio>;
+			ldoin-supply = <&vdd_1v8_vio>;
+			iov-supply = <&vdd_1v8_vio>;
 		};
 
 		pmic: max77663@3c {
